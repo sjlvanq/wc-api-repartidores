@@ -35,8 +35,7 @@ function wcrepartidores_table_create() {
 			(
                 id INT NOT NULL AUTO_INCREMENT,
                 area_id INT,
-                nombres VARCHAR(35),
-                apellidos VARCHAR(35),
+                nombre VARCHAR(50),
                 telefono VARCHAR(15),
                 PRIMARY KEY (id),
                 FOREIGN KEY (area_id) REFERENCES $tabla_areas(id)

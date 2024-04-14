@@ -58,8 +58,7 @@ class WC_REST_Repartidores_Controller {
 			foreach ( $results as $row ) {
 				$repartidores[] = [
 					'id' => $row->id,
-					'nombres' => $row->nombres,
-					'apellidos' => $row->apellidos,
+					'nombre' => $row->nombre,
 					'area' => $row->area
 				];
 			}
