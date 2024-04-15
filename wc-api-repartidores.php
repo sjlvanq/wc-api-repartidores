@@ -51,7 +51,7 @@ function wcrepartidores_table_create() {
             
     // Ejecutar las consultas
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-    dbDelta($sql_repartidores);
     dbDelta($sql_areas);
+    dbDelta($sql_repartidores);
 }
 
