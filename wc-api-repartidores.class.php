@@ -43,6 +43,11 @@ class WC_REST_Repartidores_Controller {
 					'permission_callback' => '__return_true', 
 				),
 				array(
+					'methods' => 'PUT',
+					'callback' => array( $this, 'edit_area'),
+					'permission_callback' => '__return_true',
+				),
+				array(
 					'methods' => 'DELETE',
 					'callback' => array( $this, 'del_area'),
 					'permission_callback' => '__return_true', 
@@ -88,7 +93,26 @@ class WC_REST_Repartidores_Controller {
 			return new WP_Error( 'error', 'No se pudo agregar el área.', array( 'status' => 500 ) );
 		}
 	}
-
+	
+	public function edit_area( $request ) {
+		global $wpdb;
+		$params = $request->get_params();
+		if( ! isset( $params['id'] ) || empty( $params['id'] ) || ! ctype_digit( $params['id'] ) ) {
+			return new WP_Error( 'missing_parameter', 'Parámetro "id" faltante o inválido.', array( 'status' => 400 ) );
+		}
+		$result = $wpdb->update(
+			$wpdb->prefix . TABLA_REPARTIDORES_AREAS,
+			array(
+				'area' => $params['area'],
+				'descripcion' => $params['descripcion'],
+			),
+			array( 'id' => $params['id'] )
+		);
+		if(!$result){
+			return new WP_Error( 'error', 'No se pudo actualizar el área.', array( 'status' => 500 ) );
+		}
+	}
+	
 	public function del_area( $request ) {
 		global $wpdb;
 		$params = $request->get_params();
