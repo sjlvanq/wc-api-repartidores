@@ -117,6 +117,7 @@ class WC_REST_Repartidores_Controller {
 				$repartidores[] = [
 					'id' => $row->id,
 					'nombre' => $row->nombre,
+					'telefono' => $row->telefono,
 					'area' => $row->area
 				];
 			}
