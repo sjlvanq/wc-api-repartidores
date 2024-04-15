@@ -52,7 +52,7 @@ class WC_REST_Repartidores_Controller {
 		$repartidores = [];
 		$tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
 		$tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES;
-		$query = "SELECT r.id, r.nombres, r.apellidos, a.area FROM $tabla_repartidores r LEFT JOIN $tabla_areas a ON r.area_id = a.id;";
+		$query = "SELECT r.id, r.nombre, a.area FROM $tabla_repartidores r LEFT JOIN $tabla_areas a ON r.area_id = a.id;";
 		$results = $wpdb->get_results($query);
 		if($results) {
 			foreach ( $results as $row ) {
