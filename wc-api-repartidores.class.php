@@ -27,9 +27,16 @@ class WC_REST_Repartidores_Controller {
 			$this->namespace, 
 			'/' . $this->rest_areas,
 			array(
-				'methods' => 'GET',
-				'callback' => array( $this, 'get_areas'),
-				'permission_callback' => '__return_true', 
+				array(
+					'methods' => 'GET',
+					'callback' => array( $this, 'get_areas'),
+					'permission_callback' => '__return_true', 
+				),
+				array(
+					'methods' => 'POST',
+					'callback' => array( $this, 'add_area'),
+					'permission_callback' => '__return_true', 
+				),
 			)
 		);
 	}
@@ -49,9 +56,27 @@ class WC_REST_Repartidores_Controller {
 				];
 			}
 		}
-		$json_response = json_encode($repartidores);
+		//$json_response = json_encode($repartidores);
 		header('Content-Type: application/json');
 		return $areas;
+	}
+	
+	public function add_area( $request ) {
+		global $wpdb;
+		$params = $request->get_params();
+		if( !isset( $params['area'] ) || empty( $params['area'] )) {
+			return new WP_Error( 'missing_parameter', 'El parámetro "area" es requerido.', array( 'status' => 400 ) );
+		}
+		$result = $wpdb->insert(
+			$wpdb->prefix . TABLA_REPARTIDORES_AREAS,
+			array(
+				'area' => $params['area'],
+				'descripcion' => $params['descripcion']
+			)
+		);
+		if(!$result){
+			return new WP_Error( 'error', 'No se pudo agregar el área.', array( 'status' => 500 ) );
+		}
 	}
 	
 	public function get_repartidores() {
@@ -70,7 +95,7 @@ class WC_REST_Repartidores_Controller {
 				];
 			}
 		}
-		$json_response = json_encode($repartidores);
+		//$json_response = json_encode($repartidores);
 		header('Content-Type: application/json');
 		return $repartidores;
 	}
