@@ -37,6 +37,11 @@ class WC_REST_Repartidores_Controller {
 					'callback' => array( $this, 'add_area'),
 					'permission_callback' => '__return_true', 
 				),
+				array(
+					'methods' => 'DELETE',
+					'callback' => array( $this, 'del_area'),
+					'permission_callback' => '__return_true', 
+				),
 			)
 		);
 	}
@@ -76,6 +81,22 @@ class WC_REST_Repartidores_Controller {
 		);
 		if(!$result){
 			return new WP_Error( 'error', 'No se pudo agregar el área.', array( 'status' => 500 ) );
+		}
+	}
+
+	public function del_area( $request ) {
+		global $wpdb;
+		$params = $request->get_params();
+		if( !isset( $params['id'] ) || empty( $params['id'] )) {
+			return new WP_Error( 'missing_parameter', 'El parámetro "id" es requerido.', array( 'status' => 400 ) );
+		}
+		$result = $wpdb->delete(
+			$wpdb->prefix . TABLA_REPARTIDORES_AREAS,
+			array( 'id' => $params['id'] ),
+			array( '%d' )
+		);
+		if(!$result){
+			return new WP_Error( 'error', 'No se pudo eliminar el área.', array( 'status' => 500 ) );
 		}
 	}
 	
