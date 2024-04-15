@@ -76,9 +76,9 @@ class WC_REST_Repartidores_Controller {
 				];
 			}
 		}
-		//$json_response = json_encode($repartidores);
-		header('Content-Type: application/json');
-		return $areas;
+		$resp = new WP_REST_Response($areas, 200);
+		$resp->header('Content-Type', 'application/json');
+		return $resp;
 	}
 	
 	public function add_area( $request ) {
@@ -127,7 +127,7 @@ class WC_REST_Repartidores_Controller {
 	public function del_area( $request ) {
 		global $wpdb;
 		$params = $request->get_params();
-		if( ! isset( $params['id'] ) || ! ctype_digit( $params['id'] ))) {
+		if( ! isset( $params['id'] ) || ! ctype_digit( $params['id'] )) {
 			return new WP_Error( 'invalid_parameter', 'Parámetro ID faltante o inválido.', array( 'status' => 400 ) );
 		}
 		$result = $wpdb->delete(
@@ -157,9 +157,9 @@ class WC_REST_Repartidores_Controller {
 				];
 			}
 		}
-		//$json_response = json_encode($repartidores);
-		header('Content-Type: application/json');
-		return $repartidores;
+		$resp = new WP_REST_Response($repartidores, 200);
+		$resp->header('Content-Type', 'application/json');
+		return $resp;
 	}
 	
 	public function add_repartidor( $request ) {
