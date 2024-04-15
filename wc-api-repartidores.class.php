@@ -78,6 +78,7 @@ class WC_REST_Repartidores_Controller {
 		}
 		$resp = new WP_REST_Response($areas, 200);
 		$resp->header('Content-Type', 'application/json');
+		$resp->header('X-WP-Total', count($areas));
 		return $resp;
 	}
 	
@@ -159,6 +160,7 @@ class WC_REST_Repartidores_Controller {
 		}
 		$resp = new WP_REST_Response($repartidores, 200);
 		$resp->header('Content-Type', 'application/json');
+		$resp->header('X-WP-Total', count($repartidores));
 		return $resp;
 	}
 	
