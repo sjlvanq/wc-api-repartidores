@@ -98,7 +98,7 @@ class WC_REST_Repartidores_Controller {
 		$params = $request->get_params();
 		if ( ! isset( $params['area'] ) || ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $params['area'] )) {
 			return new WP_Error( 'invalid_parameter', 'El nombre de área ha sido omitido o contiene caracteres inválidos.', array( 'status' => 400 ) ); }
-		if ( ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
+		if ( isset($params['descripcion']) && ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
 			return new WP_Error( 'invalid_parameter', 'La descripción del área contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		$result = $wpdb->insert(
 			$wpdb->prefix . TABLA_REPARTIDORES_AREAS,
@@ -120,7 +120,7 @@ class WC_REST_Repartidores_Controller {
 			return new WP_Error( 'invalid_parameter', 'El parámetro ID ha sido omitido o es inválido.', array( 'status' => 400 ) ); }
 		if ( ! isset( $params['area'] ) || ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $params['area'] )) {
 			return new WP_Error( 'invalid_parameter', 'El nombre de área ha sido omitido o contiene caracteres inválidos.', array( 'status' => 400 ) ); }
-		if ( ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
+		if ( isset( $params['descripcion'] ) && ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
 			return new WP_Error( 'invalid_parameter', 'La descripción del área contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		
 		$result = $wpdb->update(
@@ -192,7 +192,7 @@ class WC_REST_Repartidores_Controller {
 		
 		if ( ! isset( $params['nombre'] ) || ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $params['nombre'] )) {
 			return new WP_Error( 'invalid_parameter', 'El nombre del repartidor ha sido omitido o contiene caracteres inválidos.', array( 'status' => 400 ) ); }
-		if ( ! preg_match('/^[0-9+.-()\s]*$/', $params['telefono'] )) {
+		if ( isset($params['telefono']) && ! preg_match('/^[0-9+.-()\s]*$/', $params['telefono'] )) {
 			return new WP_Error( 'invalid_parameter', 'El número telefónico contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		
 		$result = $wpdb->insert(
@@ -215,7 +215,7 @@ class WC_REST_Repartidores_Controller {
 			return new WP_Error( 'invalid_parameter', 'El parámetro ID ha sido omitido o es inválido.', array( 'status' => 400 ) ); }
 		if ( ! isset( $params['nombre'] ) || ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $params['nombre'] )) {
 			return new WP_Error( 'invalid_parameter', 'El nombre del repartidor ha sido omitido o contiene caracteres inválidos.', array( 'status' => 400 ) ); }
-		if ( ! preg_match('/^[0-9+.-()\s]*$/', $params['telefono'] ?? '' )) {
+		if ( isset( $params['telefono'] ) && ! preg_match('/^[0-9+.-()\s]*$/', $params['telefono'] ?? '' )) {
 			return new WP_Error( 'invalid_parameter', 'El número telefónico contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		if( isset( $params['area_id'] ) && ! ctype_digit( $params['area_id'] )) {
 			return new WP_Error( 'invalid_parameter', 'El parámetro "area_id" es inválido.', array( 'status' => 400 ) ); }
