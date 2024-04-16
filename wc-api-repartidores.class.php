@@ -9,7 +9,7 @@ class WC_REST_Repartidores_Controller {
 	public function register_routes() {
 		register_rest_route(
 			$this->namespace, 
-			'/' . $this->rest_base,
+			'/' . $this->rest_base .  '/?(?P<id>\d+)?/?',
 			array(
 				array(
 					'methods' => 'GET',
@@ -33,9 +33,10 @@ class WC_REST_Repartidores_Controller {
 				),
 			)
 		);
+
 		register_rest_route(
 			$this->namespace, 
-			'/' . $this->rest_areas,
+			'/' . $this->rest_areas .  '/?(?P<id>\d+)?/?',
 			array(
 				array(
 					'methods' => 'GET',
@@ -61,11 +62,18 @@ class WC_REST_Repartidores_Controller {
 		);
 	}
 	
-	public function get_areas() {
+	public function get_areas($request) {
 		global $wpdb;
 		$areas = [];
 		$tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
-		$query = "SELECT * FROM $tabla_areas;";
+		$param_id = $request->get_param('id');
+		
+		$query = "SELECT * FROM $tabla_areas";
+		if( ! is_null( $param_id ) ) {
+			$query .= $wpdb->prepare(" WHERE id = %d LIMIT 1", $param_id);
+		}
+		$query.=";";
+		
 		$results = $wpdb->get_results($query);
 		if($results) {
 			foreach ( $results as $row ) {
@@ -75,11 +83,14 @@ class WC_REST_Repartidores_Controller {
 					'descripcion' => $row->descripcion
 				];
 			}
+			if( ! is_null( $param_id ) ) $areas=$areas[0];
+			$resp = new WP_REST_Response($areas, 200);
+			$resp->header('Content-Type', 'application/json');
+			$resp->header('X-WP-Total', count($areas));
+			return $resp; 
+		} else {
+			return new WP_Error( 'not_found', 'No se ha encontrado.', array( 'status' => 400 ) ); 
 		}
-		$resp = new WP_REST_Response($areas, 200);
-		$resp->header('Content-Type', 'application/json');
-		$resp->header('X-WP-Total', count($areas));
-		return $resp;
 	}
 	
 	public function add_area( $request ) {
@@ -141,12 +152,19 @@ class WC_REST_Repartidores_Controller {
 		}
 	}
 	
-	public function get_repartidores() {
+	public function get_repartidores($request) {
 		global $wpdb;
 		$repartidores = [];
 		$tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
 		$tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES;
-		$query = "SELECT r.id, r.nombre, r.telefono, a.area FROM $tabla_repartidores r LEFT JOIN $tabla_areas a ON r.area_id = a.id;";
+		$param_id = $request->get_param('id');
+		
+		$query = "SELECT r.id, r.nombre, r.telefono, a.area FROM $tabla_repartidores r LEFT JOIN $tabla_areas a ON r.area_id = a.id";
+		if( ! is_null( $param_id ) ) {
+			$query .= $wpdb->prepare(" WHERE r.id = %d LIMIT 1", $param_id);
+		}
+		$query.=";";
+		
 		$results = $wpdb->get_results($query);
 		if($results) {
 			foreach ( $results as $row ) {
@@ -157,11 +175,15 @@ class WC_REST_Repartidores_Controller {
 					'area' => $row->area
 				];
 			}
+			if( ! is_null( $param_id ) ) $repartidores=$repartidores[0];
+			$resp = new WP_REST_Response($repartidores, 200);
+			$resp->header('Content-Type', 'application/json');
+			$resp->header('X-WP-Total', count($repartidores));
+			return $resp;
+		} else {
+			return new WP_Error( 'not_found', 'No se ha encontrado.', array( 'status' => 400 ) ); 
 		}
-		$resp = new WP_REST_Response($repartidores, 200);
-		$resp->header('Content-Type', 'application/json');
-		$resp->header('X-WP-Total', count($repartidores));
-		return $resp;
+
 	}
 	
 	public function add_repartidor( $request ) {
