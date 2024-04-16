@@ -134,6 +134,10 @@ class WC_REST_Repartidores_Controller {
 		if(!$result){
 			return new WP_Error( 'error', 'No se pudo actualizar el área.', array( 'status' => 500 ) );
 		}
+		// ToDo: devolver el objeto completo
+		$ret = new WP_REST_Response(array("id"=>$params['id']), 200);
+		$ret->header('Content-Type', 'application/json');
+		return $ret;
 	}
 	
 	public function del_area( $request ) {
@@ -232,6 +236,10 @@ class WC_REST_Repartidores_Controller {
 		if(!$result){
 			return new WP_Error( 'error', 'No se pudieron actualizar los datos del repartidor.', array( 'status' => 500 ) );
 		}
+		// ToDo: devolver el objeto completo
+		$ret = new WP_REST_Response(array("id"=>$params['id']), 200);
+		$ret->header('Content-Type', 'application/json');
+		return $ret;
 	}
 	
 	public function del_repartidor( $request ) {
