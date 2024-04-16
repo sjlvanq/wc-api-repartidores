@@ -118,9 +118,9 @@ class WC_REST_Repartidores_Controller {
 		
 		if( ! isset( $params['id'] ) || ! ctype_digit( $params['id'] )) {
 			return new WP_Error( 'invalid_parameter', 'El parámetro ID ha sido omitido o es inválido.', array( 'status' => 400 ) ); }
-		if ( ! isset( $params['area'] ) || ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]+$/', $params['area'] )) {
+		if ( ! isset( $params['area'] ) || ! preg_match('/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ\s]+$/', $params['area'] )) {
 			return new WP_Error( 'invalid_parameter', 'El nombre de área ha sido omitido o contiene caracteres inválidos.', array( 'status' => 400 ) ); }
-		if ( isset( $params['descripcion'] ) && ! preg_match('/^[a-zA-ZáéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
+		if ( isset( $params['descripcion'] ) && ! preg_match('/^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜ\s]*$/', $params['descripcion'] )) {
 			return new WP_Error( 'invalid_parameter', 'La descripción del área contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		
 		$result = $wpdb->update(
