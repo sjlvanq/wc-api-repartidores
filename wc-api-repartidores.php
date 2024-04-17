@@ -30,28 +30,38 @@ function wcrepartidores_table_create() {
     global $wpdb;
     $tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES;
     $tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
+    $tabla_relacion = $wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES_AREAS;
     
-    $sql_repartidores = "CREATE TABLE IF NOT EXISTS $tabla_repartidores 
-			(
+    $sql_repartidores = "CREATE TABLE IF NOT EXISTS 
+		$tabla_repartidores (
                 id INT NOT NULL AUTO_INCREMENT,
-                area_id INT,
                 nombre VARCHAR(50),
                 telefono VARCHAR(15),
                 PRIMARY KEY (id),
-                FOREIGN KEY (area_id) REFERENCES $tabla_areas(id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
             
-	$sql_areas = "CREATE TABLE IF NOT EXISTS $tabla_areas 
-			(
+	$sql_areas = "CREATE TABLE IF NOT EXISTS 
+		$tabla_areas (
                 id INT NOT NULL AUTO_INCREMENT,
                 area VARCHAR(35),
                 descripcion VARCHAR(250),
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8";
             
+    	$sql_repartidores_areas = "CREATE TABLE IF NOT EXISTS 
+			$tabla_relacion (
+				 repartidor_id INT,
+				 area_id INT,
+				 PRIMARY KEY (repartidor_id, area_id),
+				 FOREIGN KEY (repartidor_id) REFERENCES $tabla_repartidores(id),
+				 FOREIGN KEY (area_id) REFERENCES $tabla_areas(id)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+);
+
     // Ejecutar las consultas
     require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
     dbDelta($sql_areas);
     dbDelta($sql_repartidores);
+    dbDelta($sql_repartidores_areas);
 }
 
