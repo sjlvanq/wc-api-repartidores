@@ -160,7 +160,7 @@ class WC_REST_Repartidores_Controller {
 		global $wpdb;
 		$repartidores = [];
 		$tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
-		$tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES;
+		$tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES;
 		$param_id = $request->get_param('id');
 		
 		$query = "SELECT r.id, r.nombre, r.telefono, a.area FROM $tabla_repartidores r LEFT JOIN $tabla_areas a ON r.area_id = a.id";
@@ -200,7 +200,7 @@ class WC_REST_Repartidores_Controller {
 			return new WP_Error( 'invalid_parameter', 'El número telefónico contiene caracteres inválidos.', array( 'status' => 400 ) ); }
 		
 		$result = $wpdb->insert(
-			$wpdb->prefix . TABLA_REPARTIDORES,
+			$wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES,
 			array(
 				'nombre' => $params['nombre'],
 				'telefono' => $params['telefono']
@@ -249,7 +249,7 @@ class WC_REST_Repartidores_Controller {
 			return new WP_Error( 'invalid_parameter', 'Parámetro ID faltante o inválido.', array( 'status' => 400 ) );
 		}
 		$result = $wpdb->delete(
-			$wpdb->prefix . TABLA_REPARTIDORES,
+			$wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES,
 			array( 'id' => $params['id'] ),
 			array( '%d' )
 		);

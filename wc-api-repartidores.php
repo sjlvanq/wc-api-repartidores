@@ -28,7 +28,7 @@ function wcrepartidores_woocommerce_init(){
 
 function wcrepartidores_table_create() {
     global $wpdb;
-    $tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES;
+    $tabla_repartidores = $wpdb->prefix . TABLA_REPARTIDORES_REPARTIDORES;
     $tabla_areas = $wpdb->prefix . TABLA_REPARTIDORES_AREAS;
     
     $sql_repartidores = "CREATE TABLE IF NOT EXISTS $tabla_repartidores 
